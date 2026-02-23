@@ -355,17 +355,17 @@ public class HttpBridge extends AbstractVerticle {
         if (this.bridgeConfig.getHttpConfig().isSslEnabled()) {
             httpServerOptions.setSsl(true);
 
-            if (bridgeConfig.getHttpConfig().getHttpServerSslKeystoreLocation() != null && this.bridgeConfig.getHttpConfig().getHttpServerSslKeystoreKeyLocation() != null) {
+            if (bridgeConfig.getHttpConfig().getHttpServerSslCertificateLocation() != null && this.bridgeConfig.getHttpConfig().getHttpServerSslKeyLocation() != null) {
                 httpServerOptions.setKeyCertOptions(new PemKeyCertOptions()
-                        .setKeyPath(this.bridgeConfig.getHttpConfig().getHttpServerSslKeystoreKeyLocation())
-                        .setCertPath(this.bridgeConfig.getHttpConfig().getHttpServerSslKeystoreLocation()));
-            } else if (bridgeConfig.getHttpConfig().getHttpServerSslKeystoreCertificateChain() != null && this.bridgeConfig.getHttpConfig().getHttpServerSslKeystoreKey() != null) {
+                        .setKeyPath(this.bridgeConfig.getHttpConfig().getHttpServerSslKeyLocation())
+                        .setCertPath(this.bridgeConfig.getHttpConfig().getHttpServerSslCertificateLocation()));
+            } else if (bridgeConfig.getHttpConfig().getHttpServerSslCertificate() != null && this.bridgeConfig.getHttpConfig().getHttpServerSslKey() != null) {
                 httpServerOptions.setKeyCertOptions(new PemKeyCertOptions()
-                        .addKeyValue(Buffer.buffer(this.bridgeConfig.getHttpConfig().getHttpServerSslKeystoreKey()))
-                        .addCertValue(Buffer.buffer(this.bridgeConfig.getHttpConfig().getHttpServerSslKeystoreCertificateChain())));
+                        .addKeyValue(Buffer.buffer(this.bridgeConfig.getHttpConfig().getHttpServerSslKey()))
+                        .addCertValue(Buffer.buffer(this.bridgeConfig.getHttpConfig().getHttpServerSslCertificate())));
             } else {
-                LOGGER.error("Required SSL configurations are missing! Either both of http.ssl.keystore.location and http.ssl.keystore.key.location " +
-                        "or both of http.ssl.keystore.certificate.chain and http.ssl.keystore.key should be configured");
+                LOGGER.error("Required SSL configurations are missing! Either both of http.ssl.certificate.location and http.ssl.key.location " +
+                        "or both of http.ssl.certificate and http.ssl.key should be configured");
             }
 
             Set<String> sslEnabledProtocols = this.bridgeConfig.getHttpConfig().getHttpServerSslEnabledProtocols();
